@@ -12,6 +12,15 @@ class SlackController < ApplicationController
     end
   end
 
+  def interactions
+    payload = JSON.parse(params[:payload])
+    if payload["type"] == "view_submission" && payload.dig("view", "callback_id") == "incident_submission"
+      RootlyInteractionsService.new(payload).process_incident_submission
+    else
+      render json: { text: "Unkown interaction" }
+    end
+  end
+
   private
 
   def valid_slack_request?
