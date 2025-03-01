@@ -1,2 +1,3 @@
 web: bin/rails server
 css: bin/rails tailwindcss:watch
+worker: PGGSSENCMODE=disable rails solid_queue:start

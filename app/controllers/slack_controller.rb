@@ -15,9 +15,8 @@ class SlackController < ApplicationController
   def interactions
     payload = JSON.parse(params[:payload])
     if payload["type"] == "view_submission" && payload.dig("view", "callback_id") == "incident_submission"
-      RootlyInteractionsService.new(payload).process_incident_submission
-    else
-      render json: { text: "Unkown interaction" }
+      # Running as a background job since Slack will give a timeout if this request takes more than 3 seconds to finish
+      RootlyInteractionsJob.perform_later(payload)
     end
   end
 
