@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :incidents
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
@@ -9,4 +10,8 @@ Rails.application.routes.draw do
 
   post "/slack/commands", to: "slack#commands"
   post "/slack/interactions", to: "slack#interactions"
+
+  resources :incidents, only: [ :index ]
+
+  root "incidents#index"
 end
