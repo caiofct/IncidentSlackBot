@@ -23,6 +23,6 @@ class SlackController < ApplicationController
   private
 
   def valid_slack_request?
-    params[:token] == ENV["SLACK_VERIFICATION_TOKEN"]
+    params[:token] == Rails.application.credentials.dig(:slack, :verification_token)
   end
 end

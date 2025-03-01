@@ -38,6 +38,6 @@ module SlackApi
   end
 
   def slack_headers
-    { "Authorization" => "Bearer #{ENV['SLACK_BOT_TOKEN']}", "Content-Type" => "application/json; charset=utf-8" }
+    { "Authorization" => "Bearer #{Rails.application.credentials.dig(:slack, :bot_token)}", "Content-Type" => "application/json; charset=utf-8" }
   end
 end
