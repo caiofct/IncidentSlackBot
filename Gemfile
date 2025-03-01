@@ -45,6 +45,7 @@ gem "thruster", require: false
 #
 
 gem "httparty"
+gem "mission_control-jobs"
 
 group :development, :test do
   gem "dotenv"
