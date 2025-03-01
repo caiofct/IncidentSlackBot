@@ -1,4 +1,6 @@
 class RootlyCommandService
+  include SlackApi
+
   attr_reader :text, :trigger_id, :channel_id
 
   def initialize(text, trigger_id, channel_id)
@@ -19,6 +21,8 @@ class RootlyCommandService
       { text: "Usage: `/rootly declare <title>` or `/rootly resolve`" }
     end
   end
+
+  private
 
   def open_incident_modal(title)
     modal_payload = {
@@ -61,16 +65,20 @@ class RootlyCommandService
       }
     }
 
-    response = HTTParty.post(
-      "https://slack.com/api/views.open",
-      headers: slack_headers,
-      body: modal_payload.to_json
-    )
+    response = open_slack_modal(modal_payload)
 
     { text: response.success? ? "Opening incident modal..." : "Error opening incident modal. Please try again!" }
   end
 
-  def slack_headers
-    { "Authorization" => "Bearer #{ENV['SLACK_BOT_TOKEN']}", "Content-Type" => "application/json" }
+  def resolve_incident
+    incident = Incident.find_by(slack_channel_id: channel_id, status: "open")
+    return { text: "No active incident found in this channel." } unless incident
+
+    incident.update!(status: "resolved", resolved_at: Time.current)
+    duration = ((incident.resolved_at - incident.created_at) / 60).round
+
+    send_slack_message(channel_id, "Incident *#{incident.title}* resolved in *#{duration} minutes*.")
+
+    { text: "Command executed successfully!" }
   end
 end
