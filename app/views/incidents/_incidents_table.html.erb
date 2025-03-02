@@ -1,0 +1,63 @@
+ <% if incidents.any? %>
+  <table class="min-w-full divide-y divide-gray-300">
+    <thead>
+      <tr>
+        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
+          <%= link_to incidents_path(sort: "title", direction: toggle_direction(params[:direction])), class: "text-indigo-600 hover:text-indigo-900 group inline-flex", "data-turbo-stream": "" do %>
+            <span class="mr-2">Title</span>
+            <span class="<%= sort_header_class('title') %>">
+              <svg class="size-5 <%= sort_icon_class('title') %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          <% end %>
+        </th>
+        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+          <%= link_to incidents_path(sort: "description", direction: toggle_direction(params[:direction])), class: "text-indigo-600 hover:text-indigo-900 group inline-flex", "data-turbo-stream": "" do %>
+            <span class="mr-2">Description</span>
+            <span class="<%= sort_header_class('description') %>">
+              <svg class="size-5 <%= sort_icon_class('description') %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          <% end %>
+        </th>
+        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+          <%= link_to incidents_path(sort: "severity", direction: toggle_direction(params[:direction])), class: "text-indigo-600 hover:text-indigo-900 group inline-flex", "data-turbo-stream": "" do %>
+            <span class="mr-2">Severity</span>
+            <span class="<%= sort_header_class('severity') %>">
+              <svg class="size-5 <%= sort_icon_class('severity') %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          <% end %>
+        </th>
+        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+          <%= link_to incidents_path(sort: "status", direction: toggle_direction(params[:direction])), class: "text-indigo-600 hover:text-indigo-900 group inline-flex", "data-turbo-stream": "" do %>
+            <span class="mr-2">Status</span>
+            <span class="<%= sort_header_class('status') %>">
+              <svg class="size-5 <%= sort_icon_class('status') %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          <% end %>
+        </th>
+        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+          <%= link_to incidents_path(sort: "created_by", direction: toggle_direction(params[:direction])), class: "text-indigo-600 hover:text-indigo-900 group inline-flex", "data-turbo-stream": "" do %>
+            <span class="mr-2">Created By</span>
+            <span class="<%= sort_header_class('created_by') %>">
+              <svg class="size-5 <%= sort_icon_class('created_by') %>" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          <% end %>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white">
+      <%= render incidents %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="text-center my-10">No incidents found.</p>
+<% end %>
