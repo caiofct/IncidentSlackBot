@@ -11,4 +11,4 @@ set -o errexit
 # Uncomment the following line:
 bundle exec rails db:migrate
 
-./bin/thrust ./bin/railsserver
+./bin/thrust ./bin/rails server
