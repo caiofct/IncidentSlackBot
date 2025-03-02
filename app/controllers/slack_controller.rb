@@ -15,8 +15,9 @@ class SlackController < ApplicationController
   def interactions
     payload = JSON.parse(params[:payload])
     if payload["type"] == "view_submission" && payload.dig("view", "callback_id") == "incident_submission"
-      # Running as a background job since Slack will give a timeout if this request takes more than 3 seconds to finish
+      # Run as a background job since Slack will give a timeout if this request takes more than 3 seconds to finish
       # RootlyInteractionsJob.perform_later(payload)
+
       # Since render does not support workers in the free plan we are sticking to a synchronous request (Hopefully slack does not give errors on timeout)
       RootlyInteractionsService.new(payload).process_incident_submission
     end
