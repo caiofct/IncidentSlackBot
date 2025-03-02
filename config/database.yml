@@ -23,15 +23,9 @@ default: &default
 
 
 development:
-  primary:
-    <<: *default
-    host: <%= ENV["DATABASE_HOST"] || "localhost" %>
-    database: incident_slack_bot_development
-  queue:
-    <<: *default
-    host: <%= ENV["DATABASE_HOST"] || "localhost" %>
-    database: incident_slack_bot_development_queue
-    migrations_paths: db/queue_migrate
+  <<: *default
+  host: <%= ENV["DATABASE_HOST"] || "localhost" %>
+  database: incident_slack_bot_development
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -88,20 +82,8 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+# Using a single database for Solid Cable, Solid Queue and Solid Cache since render free only allows one
 production:
-  primary: &primary_production
-    <<: *default
-    database: incident_slack_bot_production
-    url: <%= ENV['DATABASE_URL'] %>
-  cache:
-    <<: *primary_production
-    database: incident_slack_bot_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: incident_slack_bot_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    database: incident_slack_bot_production_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  database: incident_slack_bot_production
+  url: <%= ENV['DATABASE_URL'] %>
