@@ -12,7 +12,7 @@ class IncidentsController < ApplicationController
   private
 
   def sort_column
-    %w[title description severity status created_by].include?(params[:sort]) ? params[:sort] : "title"
+    %w[title description severity status created_by workspace_id].include?(params[:sort]) ? params[:sort] : "title"
   end
 
   def sort_direction

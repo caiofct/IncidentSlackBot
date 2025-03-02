@@ -1,5 +1,12 @@
-module SlackApi
+class SlackApi
   SLACK_API_URL = "https://slack.com/api".freeze
+
+  attr_reader :team_id, :workspace
+
+  def initialize(team_id)
+    @team_id = team_id
+    @workspace = Workspace.find_by(team_id: team_id)
+  end
 
   def open_slack_modal(modal_payload)
     HTTParty.post(
@@ -38,6 +45,6 @@ module SlackApi
   end
 
   def slack_headers
-    { "Authorization" => "Bearer #{Rails.application.credentials.dig(:slack, :bot_token)}", "Content-Type" => "application/json; charset=utf-8" }
+    { "Authorization" => "Bearer #{workspace.access_token}", "Content-Type" => "application/json; charset=utf-8" }
   end
 end

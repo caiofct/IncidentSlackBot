@@ -6,7 +6,7 @@ class SlackController < ApplicationController
 
     case params[:command]
     when "/rootly"
-      render json: RootlyCommandService.new(params[:text], params[:trigger_id], params[:channel_id]).handle
+      render json: RootlyCommandService.new(params[:text], params[:team_id], params[:trigger_id], params[:channel_id]).handle
     else
       render json: { text: "Unknown command." }
     end

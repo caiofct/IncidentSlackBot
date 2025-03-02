@@ -1,10 +1,9 @@
 class RootlyCommandService
-  include SlackApi
+  attr_reader :text, :team_id, :trigger_id, :channel_id
 
-  attr_reader :text, :trigger_id, :channel_id
-
-  def initialize(text, trigger_id, channel_id)
+  def initialize(text, team_id, trigger_id, channel_id)
     @text = text
+    @team_id = team_id
     @trigger_id = trigger_id
     @channel_id = channel_id
   end
@@ -65,20 +64,24 @@ class RootlyCommandService
       }
     }
 
-    response = open_slack_modal(modal_payload)
+    response = slack_api.open_slack_modal(modal_payload)
 
     { text: response.success? ? "Opening incident modal..." : "Error opening incident modal. Please try again!" }
   end
 
   def resolve_incident
-    incident = Incident.find_by(slack_channel_id: channel_id, status: "open")
+    incident = slack_api.workspace.incidents.find_by(slack_channel_id: channel_id, status: "open")
     return { text: "No active incident found in this channel." } unless incident
 
     incident.update!(status: "resolved", resolved_at: Time.current)
     duration = ((incident.resolved_at - incident.created_at) / 60).round
 
-    send_slack_message(channel_id, "Incident *#{incident.title}* resolved in *#{duration} minutes*.")
+    slack_api.send_slack_message(channel_id, "Incident *#{incident.title}* resolved in *#{duration} minutes*.")
 
     { text: "Command executed successfully!" }
+  end
+
+  def slack_api
+    @slack_api ||= SlackApi.new(team_id)
   end
 end
